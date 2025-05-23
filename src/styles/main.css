@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+:root{
+    font-size: 10px;
+    --theme-color: #4eacf8;
+    --theme-hover-color: #0099ff;
+    --shadow-color:#EBEFF5;
+    --icon-color:#A0AEC0;
+}
+
+form,input,fieldset,legend,button,a{
+    all:unset;
+}
