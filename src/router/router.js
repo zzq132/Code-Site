@@ -10,6 +10,10 @@ import Login from "@/views/Login/index.vue"
 import User from "@/views/User/index.vue"
 import Editor from "@/views/Editor/index.vue"
 import RoadMap from "@/views/RoadMap/index.vue"
+import Categories from "@/views/RoadMap/components/Categories.vue"
+import Overview from "@/views/User/components/Overview.vue"
+import Account from "@/views/User/components/Account.vue"
+import Settings from "@/views/User/components/Settings.vue"
 
 const routes=[
     {
@@ -49,8 +53,22 @@ const routes=[
                 ]
             },
             {
-                path: "user/:part",
-                component: User
+                path: "user",
+                component: User,
+                children:[
+                    {
+                        path:"overview",
+                        component: Overview
+                    },
+                    {   
+                        path:"account",
+                        component: Account
+                    },
+                    {
+                        path:"settings",
+                        component: Settings
+                    }
+                ]
             },
             {
                 path: "editor",
@@ -58,7 +76,13 @@ const routes=[
             },
             {
                 path:"roadmap",
-                component: RoadMap
+                component: RoadMap,
+                children:[
+                    {
+                        path:"",
+                        component:Categories
+                    }
+                ]
             }
         ]
     },
