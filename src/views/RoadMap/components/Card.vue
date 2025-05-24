@@ -1,15 +1,14 @@
 <script setup>
-defineProps(["title", "tag", "image"])
+defineProps(["title","image"])
 </script>
 
 <template>
-  <RouterLink :to="`/learn/${title}`" class="card-container">
+  <RouterLink :to="`/roadmap/${title}`" class="card-container">
     <img class="image" :src="image" :alt="`${title}-image`" />
     <div class="content">
-      <p v-if="tag == '1'" class="title">{{ title }} Programming</p>
-      <p v-else-if="tag == '2'" class="title">{{ title }}</p>
-      <p class="author">Author: Zzz</p>
-      <p class="description">There are some description of this course ...</p>
+      <p class="title">{{ title }} Roadmap</p>
+      <p class="category">Category: {{ title }} technique</p>
+      <p class="description">Description:The intelligent AI model provides road map</p>
     </div>
   </RouterLink>
 </template>
@@ -17,17 +16,18 @@ defineProps(["title", "tag", "image"])
 <style scoped>
 .card-container {
   color: black;
-  width: 280px;
-  height: 300px;
+  width: 800px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px lightgray;
+  margin-bottom: 20px;
 }
 
 .content {
-  margin-top: 10px;
+  margin-top: 2px;
   padding: 5%;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ defineProps(["title", "tag", "image"])
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: 3rem;
   font-weight: bolder;
   color: var(--theme-color);
 }
@@ -44,12 +44,19 @@ defineProps(["title", "tag", "image"])
   color: #0099ff;
 }
 
-.author {
-  font-size: 1.6rem;
+.category {
+  font-size: 2rem;
   font-weight: bold;
 }
 
 .description {
-  font-size: 1.4rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.image {
+  max-width: 100%;
+  height: 65%;
+  background-size: cover;
 }
 </style>
