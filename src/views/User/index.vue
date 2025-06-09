@@ -5,7 +5,7 @@ import {RouterView} from "vue-router"
 
 <template>
   <div class="user-container">
-    <UserInfo />
+    <UserInfo></UserInfo>
     <div class="content-area">
       <RouterView></RouterView>
     </div>
@@ -15,13 +15,15 @@ import {RouterView} from "vue-router"
 <style scoped>
 .user-container {
   display: flex;
-  width: 100%;
-  height: 100%;
+  height: 92vh;
+  margin-top: 8vh;
+  position: relative;
 }
 
 .content-area {
-  flex: 1;
-  padding: 10px;
-  margin-left: 110px;
+  flex-grow: 1;
+  padding: 0 20px;
+  margin-left: 20%;
+  z-index: -1;
 }
 </style>

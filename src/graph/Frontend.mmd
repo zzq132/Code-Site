@@ -1,0 +1,58 @@
+flowchart LR;
+    subgraph Frontend
+       direction TB
+       Start(Start)-->InternetRelated
+       subgraph InternetRelated[Internet Knowledge]
+           direction LR
+           Internet(Internet)-->HTTP(What is HTTP?)
+           Internet-->Domain(What is Domain Name?)
+           Internet-->DNS(DNS and how it works?)
+           Internet-->Browser(How does the browser works?)
+       end
+        subgraph Language
+            direction LR
+            HTML(HTML)---CSS(CSS)---JavaScript(JavaScript)
+        end
+        InternetRelated-->Language
+        subgraph VersionControl[Version Control]
+            direction LR
+            Git(Git)-->Repository(Code Repository)---Github(Github) & GitLab(GitLab) & Gitee(Gitee)
+        end
+        Language-->VersionControl
+        subgraph JSFramework[JavaScript Framework]
+            direction LR
+            Vue(Vue)---React(React)---Angular(Angular)
+        end
+        VersionControl-->JSFramework
+        JSFramework-->BuildTools
+        subgraph BuildTools[Build Tools]
+            direction LR
+            Webpack(Webpack)---Vite(Vite)---Rollup(Rollup)
+        end
+        BuildTools-->Test
+        subgraph Test
+            direction LR
+            Vitest(Vitest)---Jest(Jest)
+        end
+        Test-->WebSecurity
+        subgraph WebSecurity[Web Security]
+            direction LR
+            JWT(JWT)---CORS(CORS)---HTTPS(HTTPS)---Auth(Auth)
+        end
+        WebSecurity-->SSR
+        subgraph SSR
+            direction LR
+            Next(Next.js)---Astro(Astro)---Nuxt(Nuxt.js)
+        end
+        SSR-->MobileApp
+        subgraph MobileApp
+            direction LR
+            ReactNative(React Native)---Flutter(Flutter)
+        end
+        MobileApp-->DesktopApp
+        subgraph DesktopApp
+            direction LR
+            Electron(Electron)---Flutter1(Flutter)---Tauri(Tauri)
+        end
+        DesktopApp-->End(End)
+    end

@@ -45,13 +45,6 @@ hr {
   background-color: var(--shadow-color);
 }
 
-.container {
-  height: 110vh;
-  display: flex;
-  margin-top: 4vh;
-  gap: 5%;
-}
-
 .panel {
   display: flex;
   flex-direction: column;
@@ -60,8 +53,10 @@ hr {
   height: 80vh;
   box-shadow: 0 0 10px var(--shadow-color);
   border-radius: 20px;
-  margin-left: 3%;
-  margin-top: 3%;
+  position: fixed;
+  left: 3%;
+  top: 15%;
+  background-color: white;
 }
 
 .logo {
@@ -114,7 +109,7 @@ img {
   width: 50%;
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--icon-color);
+  color: lightgray;
 }
 
 .nav-item i {
@@ -136,6 +131,7 @@ img {
   max-width: 30%;
   max-height: 30%;
   border-radius: 50%;
+  box-shadow: 0 0 10px var(--shadow-color);
 }
 
 .log-out p {
@@ -143,11 +139,6 @@ img {
   justify-content: center;
   align-items: center;
   gap: 20px;
-}
-
-.active {
-  background-color: var(--theme-color-light);
-  color: var(--theme-color);
 }
 
 .active i {

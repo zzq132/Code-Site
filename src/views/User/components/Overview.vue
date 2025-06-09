@@ -1,8 +1,36 @@
 <script setup>
-import { reactive } from "vue"
+import { reactive,onMounted } from "vue"
+import {useUserStore} from "@/stores/user.js"
+import {useCourseStore} from "@/stores/course.js"
+import {getUserLearning} from "@/apis/learningAPI.js"
 
-let userInfo = reactive({ "User Name": "Zzz", "Age": 21, "Gender": "Male", "Occupation": "Student" })
-let learningInfo = reactive({ "Python": 30, "C++": 20, "HTML": 80 })
+let userStore=useUserStore()
+let user=userStore.userInfo.user
+let learningInfo=reactive({})
+console.log(userStore.userLearning)
+console.log(learningInfo)
+
+let courseStore=useCourseStore()
+
+let userInfo = reactive({ "User Name": user.username, "Age": user.age, "Gender": user.gender, "Occupation": user.occupation })
+
+
+function parseLearnings(learnings){
+  learnings.forEach((learning)=>{
+    courseStore.courseInfo.forEach((course)=>{
+      if(course.id==learning.course_id){
+        learningInfo[course.course_name]=learning.progress
+      }
+    })
+  })
+}
+
+onMounted(async ()=>{
+  let learnings=await getUserLearning(user.id)
+  console.log(learnings)
+  parseLearnings(learnings)
+  console.log(learningInfo)
+})
 </script>
 
 <template>
@@ -41,8 +69,7 @@ let learningInfo = reactive({ "Python": 30, "C++": 20, "HTML": 80 })
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 5%;
-  margin-right: 5%;
+  gap: 20px;
 }
 
 .info {
@@ -50,7 +77,7 @@ let learningInfo = reactive({ "Python": 30, "C++": 20, "HTML": 80 })
   height: 100%;
   padding: 5%;
   flex-direction: column;
-  gap: 5%;
+  gap: 15px;
   box-shadow: 0 0 10px var(--shadow-color);
   border-radius: 20px;
 }

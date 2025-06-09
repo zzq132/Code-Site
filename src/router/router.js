@@ -9,8 +9,9 @@ import CourseContent from "@/views/Learn/components/CourseContent.vue"
 import Login from "@/views/Login/index.vue"
 import User from "@/views/User/index.vue"
 import Editor from "@/views/Editor/index.vue"
-import RoadMap from "@/views/RoadMap/index.vue"
-import Categories from "@/views/RoadMap/components/Categories.vue"
+import RoadmapLayout from "@/views/Roadmap/index.vue"
+import Categories from "@/views/Roadmap/components/Categories.vue"
+import Roadmap from "@/views/Roadmap/components/Roadmap.vue"
 import Overview from "@/views/User/components/Overview.vue"
 import Account from "@/views/User/components/Account.vue"
 import Settings from "@/views/User/components/Settings.vue"
@@ -46,6 +47,7 @@ const routes=[
                             },
                             {
                                 path:":type",
+                                name:"content",
                                 component:CourseContent
                             }
                         ]
@@ -76,11 +78,15 @@ const routes=[
             },
             {
                 path:"roadmap",
-                component: RoadMap,
+                component: RoadmapLayout,
                 children:[
                     {
                         path:"",
                         component:Categories
+                    },
+                    {
+                        path: ":road",
+                        component: Roadmap
                     }
                 ]
             }

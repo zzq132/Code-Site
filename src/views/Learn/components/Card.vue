@@ -1,5 +1,5 @@
 <script setup>
-defineProps(["title", "tag", "image"])
+defineProps(["title", "tag","image","author","description"])
 </script>
 
 <template>
@@ -8,8 +8,8 @@ defineProps(["title", "tag", "image"])
     <div class="content">
       <p v-if="tag == '1'" class="title">{{ title }} Programming</p>
       <p v-else-if="tag == '2'" class="title">{{ title }}</p>
-      <p class="author">Author: Zzz</p>
-      <p class="description">There are some description of this course ...</p>
+      <p class="author">Author: {{author}}</p>
+      <p class="description">{{description.replace("。","")}}</p>
     </div>
   </RouterLink>
 </template>

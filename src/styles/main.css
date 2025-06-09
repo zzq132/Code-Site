@@ -9,9 +9,16 @@
     --theme-color: #4eacf8;
     --theme-hover-color: #0099ff;
     --shadow-color:#EBEFF5;
-    --icon-color:#A0AEC0;
+    --icon-color: #e1e0e0;
 }
 
 form,input,fieldset,legend,button,a{
     all:unset;
+}
+
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
 }

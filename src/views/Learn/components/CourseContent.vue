@@ -1,10 +1,12 @@
 <script setup>
-import {ref,onMounted,nextTick} from "vue"
+import {nextTick, onMounted, ref} from "vue"
 import {useRoute} from "vue-router"
 import {marked} from "marked"
 import "github-markdown-css/github-markdown.css"
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css"
+
+import ChatAI from "@/components/ChatAI.vue"
 
 let htmlContent=ref("")
 let route=useRoute()
@@ -22,7 +24,7 @@ marked.setOptions({
 async function loadMarkdown() {
   try {
     const md = await import(`@/content/C++/lesson1.md?raw`)
-    htmlContent.value = marked(md.default)
+    htmlContent.value =await marked(md.default)
     await nextTick()
     hljs.highlightAll()
   } catch (err) {
@@ -30,11 +32,14 @@ async function loadMarkdown() {
   }
 }
 
-onMounted(loadMarkdown)
+onMounted(async ()=>{
+  await loadMarkdown()
+})
 </script>
 
 <template>
   <div v-html="htmlContent" class="markdown-body"></div>
+  <ChatAI></ChatAI>
 </template>
 
 <style scoped>

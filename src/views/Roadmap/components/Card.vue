@@ -16,8 +16,8 @@ defineProps(["title","image"])
 <style scoped>
 .card-container {
   color: black;
-  width: 800px;
-  height: 500px;
+  width: 60%;
+  height: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -57,6 +57,5 @@ defineProps(["title","image"])
 .image {
   max-width: 100%;
   height: 65%;
-  background-size: cover;
 }
 </style>

@@ -32,7 +32,7 @@ let categories = ref([
     <div class="category-container">
       <h1 class="category-title" id="category-based">Category Based</h1>
       <div class="category-based">
-        <Card v-for="category in categories" :key="category.name" :title="category.name" :image="category.image"></Card>
+        <Card  v-for="category in categories" :key="category.name" :id="category.name.toLowerCase()" :title="category.name" :image="category.image"></Card>
       </div>
     </div>
   </div>
@@ -56,7 +56,6 @@ let categories = ref([
 }
 
 .category-container {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

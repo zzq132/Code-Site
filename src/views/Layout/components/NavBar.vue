@@ -1,7 +1,11 @@
 <script setup>
-import {ref} from "vue";
+import {ref} from "vue"
+import {useUserStore} from "@/stores/user.js"
 
-const category=ref(["Home","Learn","RoadMap","Editor"])
+const category=ref(["Home","Learn","Roadmap","Editor"])
+
+let userStore=useUserStore()
+let tag=ref(("token" in userStore.userInfo))
 
 </script>
 
@@ -10,17 +14,18 @@ const category=ref(["Home","Learn","RoadMap","Editor"])
     <div class="container">
       <!--Logo-->
       <div class="nav-left">
-        <RouterLink to="/">Logo</RouterLink>
+        <RouterLink to="/"><img src="@/assets/logo/zzz.jpg" alt="logo"/><span>Code Site</span></RouterLink>
       </div>
       <!--Collapse Button-->
 <!--      <button>Show</button>-->
       <!--Nav Link-->
       <div class="nav-center">
-        <RouterLink v-for="item in category" key="item" :to="`/${item.toLowerCase()}`">{{item}}</RouterLink>
+        <RouterLink class="nav-item" v-for="item in category" key="item" :to="`/${item.toLowerCase()}`">{{item}}</RouterLink>
       </div>
       <div class="nav-right">
-        <RouterLink to="/user/overview">User</RouterLink>
-        <RouterLink to="/login">Register | Login</RouterLink>
+        <RouterLink class="nav-item" to="/user/overview" v-if="tag">User</RouterLink>
+        <RouterLink class="nav-item" to="/login" v-if="!tag">Register | Login</RouterLink>
+        <button class="nav-item logout-btn" v-else>Logout</button>
       </div>
     </div>
   </nav>
@@ -40,8 +45,16 @@ a{
   padding:0 10px;
   border-radius: 10px;
 }
-a:hover{
+.nav-item:hover{
   background-color: var(--theme-hover-color);
+}
+.logout-btn{
+  color:white;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  padding:0 10px;
+  border-radius: 10px;
 }
 .container{
   height: inherit;
@@ -57,20 +70,26 @@ a:hover{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 30%;
+  width: 35%;
 }
 .nav-left{
   display: flex;
   align-items: center;
-  gap:10%;
   width: 30%;
   padding-left: 20px;
+}
+.nav-left img{
+  max-height: 100%;
+  border-radius: 10px;
+}
+.nav-left span{
+  margin-left: 15px;
 }
 .nav-right{
   display: flex;
   justify-content: right;
   align-items: center;
-  gap:10%;
+  gap:3%;
   width: 30%;
   padding-right: 20px;
 }

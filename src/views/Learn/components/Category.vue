@@ -1,46 +1,76 @@
 <script setup>
-import { ref } from "vue"
+import { ref,onMounted } from "vue"
 import Card from "./Card.vue"
-
-// 导入所有图片
-import cImage from '@/assets/languages/c.png'
-import cppImage from '@/assets/languages/cpp.png'
-import pythonImage from '@/assets/languages/python.png'
-import javaImage from '@/assets/languages/java.png'
-import htmlImage from '@/assets/languages/html.png'
-import cssImage from '@/assets/languages/css.png'
-import jsImage from '@/assets/languages/javascript.png'
-
-import vueImage from '@/assets/skills/vue.png'
-import tailwindImage from '@/assets/skills/tailwind.png'
-import bootstrapImage from '@/assets/skills/bootstrap.png'
-import springImage from '@/assets/skills/spring.png'
-import springBootImage from '@/assets/skills/springboot.png'
-import springCloudImage from '@/assets/skills/springcloud.png'
-import mysqlImage from '@/assets/skills/mysql.png'
-import gitImage from '@/assets/skills/git.png'
+import {createLearning} from "@/apis/learningAPI.js"
+import {useUserStore} from "@/stores/user.js"
+import {useCourseStore} from "@/stores/course.js"
 
 let offset = ref(0)
-let languages = ref([
-  { name: "C", image: cImage },
-  { name: "C++", image: cppImage },
-  { name: "Python", image: pythonImage },
-  { name: "Java", image: javaImage },
-  { name: "HTML", image: htmlImage },
-  { name: "CSS", image: cssImage },
-  { name: "JavaScript", image: jsImage }
-])
+let languages = ref([])
+let skills = ref([])
+let chapterContents=["Lesson1","Lesson2","CheckPoint1","Lesson3","Lesson4","Project"]
+let chapters=["Chapter1","Chapter2","Chapter3"]
+let courseStructure=ref({})
+for(let chapter of chapters){
+  let temp={}
+  for(let content of chapterContents){
+    temp[content]=false
+  }
+  courseStructure.value[chapter]=temp
+}
+courseStructure.value.isLearn=false
 
-let skills = ref([
-  { name: "Vue", image: vueImage },
-  { name: "Tailwind", image: tailwindImage },
-  { name: "Bootstrap", image: bootstrapImage },
-  { name: "Spring", image: springImage },
-  { name: "SpringBoot", image: springBootImage },
-  { name: "SpringCloud", image: springCloudImage },
-  { name: "MySQL", image: mysqlImage },
-  { name: "Git", image: gitImage }
-])
+let userStore=useUserStore()
+let courseStore=useCourseStore()
+
+async function parseResponse(){
+  for (let val of courseStore.courseInfo) {
+    if("token" in userStore.userInfo)
+      userStore.userLearning[val.course_name]=courseStructure.value
+    if(val.type==="language"){
+      let image=await import(`@/assets/languages/${val.course_name.toLowerCase()}.png`)
+      languages.value.push({
+        "name":val.course_name,
+        "image":image.default,
+        "author":val.author,
+        "description":val.description
+      })
+    }
+    else if(val.type==="skill"){
+      let image=await import(`@/assets/skills/${val.course_name.toLowerCase()}.png`)
+      skills.value.push({
+        "name":val.course_name,
+        "image":image.default,
+        "author":val.author,
+        "description":val.description
+      })
+    }
+  }
+}
+
+async function learn(skill){
+  if(!userStore.userLearning[skill]){
+    userStore.userLearning[skill]=true
+    let learning={user_id:userStore.userInfo.user.id,progress:0}
+    for(let course of courseStore.courseInfo){
+      if(course.course_name===skill.name){
+        learning.course_id=course.id
+      }
+    }
+    console.log(learning)
+    let response=await createLearning(learning)
+    if(response.code){
+      console.log("Success")
+    }else{
+      console.log("Failed")
+    }
+  }
+}
+
+onMounted(()=>{
+  parseResponse()
+})
+
 </script>
 
 <template>
@@ -66,12 +96,12 @@ let skills = ref([
     <div class="category-container">
       <h1 class="category-title" id="language-based">Language Based</h1>
       <div class="language-based">
-        <Card v-for="language in languages" :key="language.name" :title="language.name" :image="language.image" tag="1">
+        <Card v-for="language in languages" @click="learn(language)" :key="language.name" :title="language.name" :image="language.image" :author="language.author" :description="language.description" tag="1">
         </Card>
       </div>
       <h1 class="category-title" id="skill-based">Skill Based</h1>
       <div class="skill-based">
-        <Card v-for="skill in skills" :key="skill.name" :title="skill.name" :image="skill.image" tag="2"></Card>
+        <Card v-for="skill in skills" @click="learn(skill)" :key="skill.name" :title="skill.name" :image="skill.image" :author="skill.author" :description="skill.description"  tag="2"></Card>
       </div>
     </div>
   </div>

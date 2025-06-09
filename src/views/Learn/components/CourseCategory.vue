@@ -1,6 +1,9 @@
 <script setup>
 import {ref,reactive} from "vue"
-import {useRoute} from "vue-router"
+import {useRoute,onBeforeRouteLeave} from "vue-router"
+import {useUserStore} from "@/stores/user.js"
+import {useCourseStore} from "@/stores/course.js"
+import {updateUserLearning} from "@/apis/learningAPI.js"
 
 let offset=ref(0)
 let classList=ref(["Lesson1","Lesson2","CheckPoint1","Lesson3","Lesson4","Project"])
@@ -8,6 +11,30 @@ let chapters=reactive({"Chapter1":classList,"Chapter2":classList,"Chapter3":clas
 
 let route=useRoute()
 let skill=route.params.skill
+let userStore=useUserStore()
+let courseStore=useCourseStore()
+
+function learn(chapter,content){
+  userStore.userLearning[skill][chapter][content]=true
+}
+
+onBeforeRouteLeave(async (to,from,next)=>{
+  if( ("token" in userStore.userInfo) && to.name!=="content"){
+    //更新学习进度
+    let course_id=1
+    courseStore.courseInfo.forEach((course)=>{
+      if(course.course_name===skill)
+        course_id=course.id
+    })
+    let tag=await updateUserLearning({user_id:userStore.userInfo.user.id,course_id:course_id,progress:userStore.userLearningProgress[skill]})
+    if(tag)
+      console.log("Success")
+    else
+      console.log("Failed")
+  }
+  next()
+})
+
 </script>
 
 <template>
@@ -26,7 +53,7 @@ let skill=route.params.skill
       <h1 class="title">{{skill}}</h1>
       <div class="block" v-for="(value,key) in chapters" :key="key">
         <h2 class="subtitle" :id="key">{{key}}</h2>
-        <RouterLink :to="`/learn/${skill}/${content.toLowerCase()}`" class="content" v-for="content in value" :key="content" :id="`${key+content}`">{{content}}</RouterLink>
+        <RouterLink :to="`/learn/${skill}/${content.toLowerCase()}`" @click="learn(key,content)" class="content" v-for="content in value" :key="content" :id="`${key+content}`">{{content}}</RouterLink>
       </div>
     </div>
   </div>
